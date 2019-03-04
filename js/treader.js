@@ -1,3 +1,4 @@
+"use strict";
 
 //创建svg显示
 function twords(text)
@@ -28,12 +29,13 @@ function twords(text)
 
     var words = d3plus.textSplit(text);
 
-    for (var i = 0; i < words.length; ++i) {
-        bing_search(words[i]).then((v) => {
-            console.log(v.trans);
-            dictData[v.title] = v.trans;
-            //更新显示
-            textBox.render();
-        });
-    }
+	for (var i = 0; i < words.length; ++i) {
+		if (dictData[words[i]] == undefined)
+			bing_search(words[i]).then(function (v) {
+			//console.log(v.trans);
+			dictData[v.title] = v.trans;
+			//更新显示
+			textBox.render();
+		});
+	}
 }
