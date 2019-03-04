@@ -1,4 +1,4 @@
-# T-Reader
+# T-Reader chrome 翻译插件
 
 todo:
 1 本地词典本
