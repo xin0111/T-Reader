@@ -11,8 +11,11 @@ function twords(text)
     var textBox = new d3plus.TextBox()
                       .width(window.innerWidth)
                       .height(window.innerHeight)
-                      .fontResize(function(d, i) {
-                          return true;
+                      // .fontResize(function(d, i) {
+                          // return true;
+                      // })
+					  .fontSize(function() {
+                          return 20;
                       })
                       .data([ { text : sentence } ])
                       .x(function(d, i) {
