@@ -5,7 +5,7 @@ function twords(text)
     if (undefined == text)
         return;
     //换行符处理
-    var sentence = text.replace(/↵|\n/g, "<br/>");
+    var sentence = text.replace(/↵|\n/g, " <br/> ");
     var dictData = {};
 
     var textBox = new d3plus.TextBox()
