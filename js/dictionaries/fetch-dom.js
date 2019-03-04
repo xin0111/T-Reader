@@ -1,13 +1,11 @@
+'use strict';
 
-
-function fetchDirtyDOM(input)
-{
-    return fetch(input)
-        .then(r => r.ok ? r.text() : Promise.reject(r))
-        .then(text => new DOMParser().parseFromString(
-                  text,
-                  'text/html',
-                  ));
+function fetchDirtyDOM(input) {
+    return fetch(input).then(function (r) {
+        return r.ok ? r.text() : Promise.reject(r);
+    }).then(function (text) {
+        return new DOMParser().parseFromString(text, 'text/html');
+    });
 }
 
 function
