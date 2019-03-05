@@ -34,7 +34,7 @@ var bingjs = (function(exports) {
         var result = {
             text : text,
             // getText(doc, '.client_def_hd_hd'),
-            result : ""
+             result : [ "---" ]
         };
 
         let $container
