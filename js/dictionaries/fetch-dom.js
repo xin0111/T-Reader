@@ -15,8 +15,8 @@ function
 {
     //todo search local directory
     var result = {
-        title : text,
-        trans : "..."
+        text : text,
+        result : [ "..." ]
     };
 
     return result;

@@ -38,22 +38,26 @@ function baidu_search(textBox, words)
     for (var i = 0; i < words.length; ++i) {
 
         if (bg.dictData[words[i]] == undefined)
-            baidu.translate(words[i]).then(function(result) {
-                // console.log(result)
-                bg.dictData[result.text] = result.result[0];
-                //更新显示
-                textBox.render();
-            })
+            baidu.translate(words[i])
+                .catch(err => handleNetWorkError(err.message))
+                .then(function(result) {
+                    // console.log(result)
+                    bg.dictData[result.text] = result.result[0];
+                    //更新显示
+                    textBox.render();
+                })
     }
 }
 
 function bing_search(textBox, words)
 {
+    const { bing } = bingjs;
+
     for (var i = 0; i < words.length; ++i) {
         if (bg.dictData[words[i]] == undefined)
-            bing_search(words[i]).then((v) => {
+            bing.translate(words[i]).then((v) => {
                 //  console.log(v.trans);
-                bg.dictData[v.title] = v.trans;
+                bg.dictData[v.text] = v.result[0];
                 //更新显示
                 textBox.render();
             });
