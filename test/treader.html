@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+<script src="../js/d3plus-text.full.js"></script>
+
+<body>
+</body>
+
+<script>
+
+  var data = [
+    { text: "Hello  World " }
+  ];
+
+  var dictData = {
+    "Hello": "你好",
+    "World": "世界"
+  };
+  var text = "Here is <i>some</i> \n sample text that has been <strong>wrapped</strong> \n using  d3plus.textBox ";
+  var sentence = text.replace(/↵|\n/g, "<br/>");
+  var textBox = new d3plus.TextBox()
+    .width(window.innerWidth)
+    .height(window.innerHeight)
+    .fontResize(function (d, i) {
+      return false;
+    })
+    .x(function (d, i) {
+      return i * 100;
+    })
+    .data([{ text: sentence }])
+    .transData(function (word) {
+      return "...";
+    })
+    .render();
+
+</script>

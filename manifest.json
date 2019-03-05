@@ -10,6 +10,7 @@
 	"description": "__MSG_extDesc__",
 	// 图标，全部用一个尺寸的也没问题
 	"icons": {
+		"38": "img/icons/icons38.png",
 		"48": "img/icons/icons48.png",
 		"96": "img/icons/icons96.png"
 	},
@@ -22,7 +23,6 @@
 	},
 	// 浏览器右上角图标设置，browser_action、page_action、app必须三选一
 	"browser_action": {
-		"38": "img/icons/icons38.png",
 		"default_popup": "popup.html"
 	},
 	// 权限申请

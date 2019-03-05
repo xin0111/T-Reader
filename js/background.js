@@ -1,5 +1,6 @@
 
 var selectTextMap = {};
+var dictData = {};
 //菜单
 chrome.contextMenus.create({
     title : '翻译：%s', // %s表示选中的文字

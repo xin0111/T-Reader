@@ -1,4 +1,5 @@
-"use strict";
+
+var bg = chrome.extension.getBackgroundPage();
 
 //创建svg显示
 function twords(text)
@@ -7,15 +8,14 @@ function twords(text)
         return;
     //换行符处理
     var sentence = text.replace(/↵|\n/g, " <br/> ");
-    var dictData = {};
 
     var textBox = new d3plus.TextBox()
                       .width(window.innerWidth)
                       .height(window.innerHeight)
                       // .fontResize(function(d, i) {
-                          // return true;
+                      // return true;
                       // })
-					  .fontSize(function() {
+                      .fontSize(function() {
                           return 20;
                       })
                       .data([ { text : sentence } ])
@@ -23,19 +23,39 @@ function twords(text)
                           return i * 100;
                       })
                       .transData(function(word) {
-                          return dictData[word];
+                          return bg.dictData[word];
                       })
                       .render();
 
     var words = d3plus.textSplit(text);
 
-	for (var i = 0; i < words.length; ++i) {
-		if (dictData[words[i]] == undefined)
-			bing_search(words[i]).then(function (v) {
-			//console.log(v.trans);
-			dictData[v.title] = v.trans;
-			//更新显示
-			textBox.render();
-		});
-	}
+    baidu_search(textBox, words);
+}
+
+function baidu_search(textBox, words)
+{
+    const { youdao, baidu, google } = tjs;
+    for (var i = 0; i < words.length; ++i) {
+
+        if (bg.dictData[words[i]] == undefined)
+            baidu.translate(words[i]).then(function(result) {
+                // console.log(result)
+                bg.dictData[result.text] = result.result[0];
+                //更新显示
+                textBox.render();
+            })
+    }
+}
+
+function bing_search(textBox, words)
+{
+    for (var i = 0; i < words.length; ++i) {
+        if (bg.dictData[words[i]] == undefined)
+            bing_search(words[i]).then((v) => {
+                //  console.log(v.trans);
+                bg.dictData[v.title] = v.trans;
+                //更新显示
+                textBox.render();
+            });
+    }
 }
