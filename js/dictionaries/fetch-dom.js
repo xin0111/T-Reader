@@ -1,6 +1,6 @@
 
 
-function fetchDirtyDOM(input)
+export function fetchDirtyDOM(input)
 {
     return fetch(input)
         .then(r => r.ok ? r.text() : Promise.reject(r))
@@ -10,7 +10,7 @@ function fetchDirtyDOM(input)
                   ));
 }
 
-function
+export function
     handleNetWorkError(text)
 {
     //todo search local directory

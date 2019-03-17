@@ -3762,7 +3762,7 @@ if (!Array.prototype.includes) {
           checkSize();
 
         }
-      var widthProg = 0;
+      var widthProg = 0,
           heightPorg = 0;
         for (var i = 0; i < lineData.length; i++) {
           if (lineData[i]) {

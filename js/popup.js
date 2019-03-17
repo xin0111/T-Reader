@@ -1,10 +1,17 @@
-var bg = chrome.extension.getBackgroundPage();
 
+import $ from 'jquery'
+var bg = chrome.extension.getBackgroundPage();
 // 翻译输入
 $('#inputText').keypress(e => {
     if (e.keyCode == 13) {
         //Enter Key
-        bg.openTranslationTab(inputText.value);
+        chrome.runtime.sendMessage({
+            action : 'opentab',
+            data : inputText.value
+        },
+            function(msg) {
+
+            });
     }
 });
 

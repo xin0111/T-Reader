@@ -5,29 +5,22 @@
     <title>TReader</title>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style type="text/css">
-        .editable {
-            cursor: text;
-            font-size: 13px;
-            color: #003366;
-            width: 300px;
-            height: 300px;
-            font-family: Arial;
-            cursor: text;
-            *overflow-y: hidden;
-        }
-    </style>
+    <link href="css/popup.css" rel="stylesheet">
 </head>
 
 <body>
-    <textarea class="editable" id="inputText" placeholder="请输入内容"></textarea>
-    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
-    <script type="text/javascript" src="js/d3plus-text.full.js"></script>
-    <script src="js/dictionaries/tjs.browser.js"></script>	
-    <script src="js/dictionaries/fetch-dom.js"></script>
-    <script src="js/dictionaries/bing-engine.js"></script>
-    <script src="js/treader.js"></script>
-    <script src="js/popup.js"></script>
+
+    <ul class="menus">
+        <li class="menu-item">
+            <textarea class="editable" id="inputText" placeholder="请输入内容"></textarea>
+        </li>
+        <li>
+            <a href="options.html?tab=general" target="_blank">
+                <img src="/img/help.png" alt="">
+                <span> 设置 </span>
+            </a>
+        </li>
+    </ul>
 </body>
 
 </html>

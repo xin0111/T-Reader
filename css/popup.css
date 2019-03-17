@@ -1,0 +1,52 @@
+
+  body {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box; }
+    body * {
+      box-sizing: inherit; }
+  
+  a {
+    text-decoration: none; }
+    a:active, a:focus, a:hover, a:visited, a:link {
+      color: #333; }
+  
+  li {
+    list-style: none; }
+    li :focus {
+      outline: none; }
+  
+  .main {
+    padding: 0px 12px;
+    width: 250px; }
+  
+  .menus {
+    margin: 12px 0;
+    padding: 0;
+    border-radius: 2px; }
+    .menus li {
+      padding: 10px 0px 10px 5px;
+      cursor: pointer; }
+      .menus li:hover {
+        background-color: #ece7df; }
+    .menus a {
+      display: flex;
+      align-items: center; }
+    .menus img {
+      margin-right: 5px;
+      width: 20px;
+      height: 20px; }
+  
+
+.editable {
+	cursor: text;
+	font-size: 13px;
+	color: #003366;
+	width: 300px;
+	height: 300px;
+	font-family: Arial;
+	cursor: text;
+	*overflow-y: hidden;
+}
+	

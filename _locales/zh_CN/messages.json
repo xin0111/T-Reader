@@ -6,6 +6,54 @@
         "message": " translation reader"
     },
     "popup_item_help": {
-        "message": "帮助111"
+        "message": "帮助"
+    },
+    "options_tab_general": {
+        "message": "通用"
+    },
+    "options_general_engine": {
+        "message": "翻译引擎"
+    },
+    "options_general_target": {
+        "message": "目标语言"
+    },
+    "options_general_fontsize": {
+        "message": "字体大小"
+    },
+    "options_display_wordok": {
+        "message": "显示熟悉词"
+    },
+    "options_base_choose": {
+        "message": "请选择"
+    },
+    "options_base_save": {
+        "message": "保存"
+    },
+    "options_msg_saveok": {
+        "message": "保存成功"
+    },
+    "options_msg_search": {
+        "message": "搜索"
+    },
+    "options_tab_wordbook": {
+        "message": "单词本"
+    },
+    "options_word_new": {
+        "message": "新单词"
+    },
+    "options_word_ok": {
+        "message": "熟悉词"
+    },
+    "options_word_next": {
+        "message": "陌生词"
+    },
+    "options_word_export": {
+        "message": "数据导出"
+    },
+    "options_word_import": {
+        "message": "数据导入"
+    },
+    "options_tab_wordroots": {
+        "message": "字根表"
     }
 }

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>T-Reader Settings</title>
+    <link href="css/options.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app" class="treader" v-cloak>
+        <header class="topbar">
+            <div class="links">
+                <a href="https://github.com/xin0111/T-Reader" class="github" target="_blank">
+                    <img src="/img/github.png" alt="">
+                </a>
+            </div>
+        </header>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <!-- 通用 -->
+            <el-tab-pane :label="i18n.msg.general" name="general">
+                <el-form style="margin: 20px 0; min-height: 150px;" ref="config" :model="config">
+                    <el-row>
+                        <el-col :span="6">
+                            <el-form-item :label="i18n.msg.engine">
+                                <el-select v-model="config.engine" :placeholder="i18n.msg.choose">
+                                    <el-option v-for="(item, index) in TRANSLATE_ENGINS" :key="index" :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item :label="i18n.msg.target">
+                                <el-select v-model="config.to" filterable :placeholder="i18n.msg.choose">
+                                    <el-option v-for="(item, index) in languages" :key="index" :label="item" :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">
+                            <el-form-item :label="i18n.msg.displayWordok">
+                                <el-switch v-model="config.displayWordok" on-color="#20a0ff">
+                                </el-switch>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item :label="i18n.msg.fontSize">
+                                <el-input v-model="config.fontSize"> </el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-form-item>
+                        <el-button type="primary" @click.native.prevent="handleConfigSubmit">{{ i18n.msg.save }}</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <!-- 单词本 -->
+            <el-tab-pane :label="i18n.msg.wordbook" name="wordbook">
+                <el-row>
+                    <el-col :span="6">
+                        <div class="word-filter filter-panel">
+                            <div class="filter-item">
+                                <div class="field-label">{{ i18n.msg.search }}</div>
+                                <el-input placeholder="SearchAll" icon="search" v-model="wordbookFilter.wordSearchText">
+                                </el-input>
+                            </div>
+                            <div>
+                                <div class="word-level">{{ wordLevelInfo[0] }}</div>
+                                <el-switch v-model="wordbookFilter.displayLevel0" on-color="#20a0ff" @change="handleLevelFilterClick(0)">
+                                </el-switch>
+                            </div>
+                            <div>
+                                <div class="word-level">{{ wordLevelInfo[1] }}
+                                </div>
+                                <el-switch v-model="wordbookFilter.displayLevel1" on-color="#20a0ff" @change="handleLevelFilterClick(1)">
+                                </el-switch>
+                            </div>
+                            <div>
+                                <div class="word-level">{{ wordLevelInfo[2] }}</div>
+                                <el-switch v-model="wordbookFilter.displayLevel2" on-color="#20a0ff" @change="handleLevelFilterClick(2)">
+                                </el-switch>
+                            </div>
+                            <div style="padding: 10px 0;">
+                                <el-button type="primary" @click="handleMarkAllNewWordClick()">批量标记</el-button>
+                            </div>
+                            <div style="padding: 10px 0;">
+                                <el-button type="primary" @click="handleExportClick()">{{ i18n.msg.wordexport }}</el-button>
+                                <el-button type="primary" @click="handleImportClick()">{{ i18n.msg.wordimport }}</el-button>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="18">
+                        <div class="word-list-container">
+                            <div class="word-list">
+                                <el-table :data="filteredWordBook" height="600" border style="width: 100% " :row-style="tableRowStyle"
+                                    @row-dblclick="handleEditorWordLevel">
+                                    <el-table-column prop="text" label="单词" width="180">
+                                    </el-table-column>
+                                    <el-table-column prop="result" label="解释" width="100">
+                                    </el-table-column>
+                                    <el-table-column prop="dict" label="详细解释">
+                                    </el-table-column>
+                                    <el-table-column prop="level.text" label="状态" width="125">
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
+            <!-- 词根 -->
+            <el-tab-pane v-if="i18n.msg.uilang === 'zh-CN'" :label="i18n.msg.wordroots" name="wordroots">
+                <el-row>
+                    <el-col :span="6">
+                        <div class="filter-panel">
+                            <div class="filter-item">
+                                <div class="field-label">{{ i18n.msg.search }}</div>
+                                <el-input placeholder="Search" icon="search" :autofocus="true" v-model="wordRootsFilter.searchText">
+                                </el-input>
+                            </div>
+                            <div class="other-info">
+                                数据来自<a href="https://book.douban.com/subject/3002766/" target="_blank">《英语词根与单词的说文解字》</a>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="18">
+                        <div class="roots-container">
+                            <el-table :data="filteredRoots" height="600" border style="width: 100%" :row-style="tableRowStyle">
+                                <el-table-column prop="root" label="词根" width="180">
+                                </el-table-column>
+                                <el-table-column prop="source" label="来源" width="100">
+                                </el-table-column>
+                                <el-table-column prop="explaintion" label="解释">
+                                </el-table-column>
+                                <el-table-column prop="page" label="页码" width="100">
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
+        </el-tabs>
+    </div>
+</body>
+
+</html>
