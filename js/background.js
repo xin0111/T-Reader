@@ -132,11 +132,6 @@ var wordsHelper = {
             function() {
                 //console.log('Saved: ' + info);
             });
-    },
-    updateWord : function(attrs) {
-        return localforage.setItem(attrs.text, attrs, function() {
-            //console.log('update: ' + attrs);
-        });
     }
 };
 
@@ -168,6 +163,12 @@ window.getWordBook = function() {
             return words;
         });
 }
+//更新单词
+window.updateWord = function(attrs)
+{
+    return localforage.setItem(attrs.text, attrs, 
+        function() {});
+}
 
 function msgHandler(requst, sender, response)
 {
@@ -177,14 +178,6 @@ function msgHandler(requst, sender, response)
     if (action === 'createWord') {
         wordsHelper.createWord(data);    
         response('create word');
-    }
-    if (action === 'updateWord') {
-        wordsHelper.updateWord(data).then(() => {
-            response({
-                msg : 'update word',
-                data : {}
-            });
-        });
     }
     if (action === 'opentab') {
         openTranslationTab(data);

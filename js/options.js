@@ -14,8 +14,6 @@ import * as i18n from '../js/message';
 import {getParameterByName} from '../js/utils'
 import wordRoots from '../js/wordroots';
 
-
-
 Vue.use(SocialSharing);
 
 const chrome = window.chrome;
@@ -78,9 +76,7 @@ function render(config)
                 wordBook: [],
                 wordbookFilter: {
                     wordSearchText : '',
-                    displayLevel0 : true,
-                    displayLevel1 : false,
-                    displayLevel2 : true
+                    levels:[0,2]
                 },
                 // roots
                 wordRootsFilter: {
@@ -161,7 +157,7 @@ function render(config)
             },
             filterWords(filter) {
 
-                let { wordSearchText, displayLevel0, displayLevel1, displayLevel2 } = filter;
+                let { wordSearchText, levels } = filter;
 
                 let results = this.wordBook;
 
@@ -170,46 +166,10 @@ function render(config)
                         return word.text.toLowerCase().indexOf(wordSearchText.toLowerCase()) !== -1;
                     });
                 } else {
-                    //判断level
-                    if (displayLevel0) {
-                        if (displayLevel1 && displayLevel2) {
-                            //0,1,2都显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 0 || level.value === 1 || level.value === 2;
-                            });
-                        } else if (displayLevel1 && !displayLevel2) {
-                            //0,1显示;2不显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 0 || level.value === 1;
-                            });
-                        } else if (!displayLevel1 && displayLevel2) {
-                            //0,2显示;1不显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 0 || level.value === 2;
-                            });
-                        } else if (!displayLevel1 && !displayLevel2) {
-                            //0显示;1,2不显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 0;
-                            });
-                        }
-                    } else {
-                        if (displayLevel1 && displayLevel2) {
-                            //0不显示;1,2都显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 1 || level.value === 2;
-                            });
-                        } else if (displayLevel1 && !displayLevel2) {
-                            //1显示;0,2不显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 1;
-                            });
-                        } else if (!displayLevel1 && displayLevel2) {
-                            //2显示;0,1不显示
-                            results = results.filter(({ level }) => {
-                                return level.value === 2;
-                            });
-                        }
+                    if (levels.length) {
+                        results = results.filter(({ level }) => {
+                            return levels.indexOf(level.value) !== -1;     
+                        });
                     }
                 }
                 return results;
@@ -217,24 +177,31 @@ function render(config)
             handleLevelFilterClick(level) {
                 //init
                 this.wordbookFilter.wordSearchText = '';
-                if (!this.wordbookFilter.displayLevel0) {
-                    this.wordbookFilter.displayLevel0 = !this.wordbookFilter.displayLevel1 && !this.wordbookFilter.displayLevel2;
+
+                let index = this.wordbookFilter.levels.indexOf(level);
+
+                if (index > -1) {
+                    this.wordbookFilter.levels.splice(index, 1);
+                } else {
+                    this.wordbookFilter.levels.push(level);
+                }
+                if(this.wordbookFilter.levels.length ===0)
+                {// 新单词显示
+                    this.wordbookFilter.levels.push(0);
                 }
                 //filter words will auto call "filteredWordBook"
             },
-            handleEditorWordLevel(row) {
-                let { level } = row;
+            handleEditorWordOk(index, row) {             
+                 //->熟悉词
+                 row.level.value = 1;
 
-                if (level.value === 0) {
-                    //新单词 双击-->陌生词
-                    row.level.value = 2;
-                } else if (level.value === 1) {
-                    //熟悉词 双击-->陌生词
-                    row.level.value = 2;
-                } else if (level.value === 2) {
-                    //陌生词 双击-->熟悉词
-                    row.level.value = 1;
-                }
+                this.saveWord(row); 
+               
+            },
+            handleEditorWordNext(index, row) {         
+
+                //熟悉词 双击-->陌生词
+                row.level.value = 2;
 
                 this.saveWord(row); 
                
@@ -254,18 +221,8 @@ function render(config)
                 wordInfo.level.text = wordLevelInfo[wordInfo.level.value];
 
                 if (wordInfo && wordInfo.text) {
-                    return new Promise((resolve, reject) => {
-                        chrome.runtime.sendMessage({
-                            action : 'updateWord',
-                            data : wordInfo
-                        },
-                            (resp) => {
-                                resolve(resp);
-                            });
-                    });
-                } else {
-                    return Promise.reject(null);
-                }
+                    bg.updateWord(wordInfo);
+                } 
             },
             downloadAsJson(words) {
                 let content = "data:text/json;charset=utf-8,";

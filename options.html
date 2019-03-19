@@ -19,7 +19,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <!-- 通用 -->
             <el-tab-pane :label="i18n.msg.general" name="general">
-                <el-form style="margin: 20px 0; min-height: 150px;" ref="config" :model="config">
+                <el-form style="margin: 20px 0; min-height: 150px;" ref="config" :model="config" :inline="true" >
                     <el-row>
                         <el-col :span="6">
                             <el-form-item :label="i18n.msg.engine">
@@ -47,7 +47,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-form-item :label="i18n.msg.fontSize">
+                            <el-form-item :label="i18n.msg.fontSize"  >
                                 <el-input v-model="config.fontSize"> </el-input>
                             </el-form-item>
                         </el-col>
@@ -59,7 +59,7 @@
             </el-tab-pane>
             <!-- 单词本 -->
             <el-tab-pane :label="i18n.msg.wordbook" name="wordbook">
-                <el-row>
+                <el-row >
                     <el-col :span="6">
                         <div class="word-filter filter-panel">
                             <div class="filter-item">
@@ -67,24 +67,19 @@
                                 <el-input placeholder="SearchAll" icon="search" v-model="wordbookFilter.wordSearchText">
                                 </el-input>
                             </div>
-                            <div>
-                                <div class="word-level">{{ wordLevelInfo[0] }}</div>
-                                <el-switch v-model="wordbookFilter.displayLevel0" on-color="#20a0ff" @change="handleLevelFilterClick(0)">
-                                </el-switch>
-                            </div>
-                            <div>
-                                <div class="word-level">{{ wordLevelInfo[1] }}
+                            <div class="filter-item">
+                                    <div class="field-label">
+                                        <span class="label-text"> 显示单词 </span>
+                                    </div>
+                                    <div class="filter-tags">
+                                        <el-tag style="margin-right: 10px;" v-for="level in [0,1,2]" 
+                                            :type="wordbookFilter.levels.indexOf(level) !== -1 ? 'danger' : 'grey'"                                           
+                                            :key="level"
+                                            @click.native="handleLevelFilterClick(level)">{{ wordLevelInfo[level] }}</el-tag>
+                                    </div>
                                 </div>
-                                <el-switch v-model="wordbookFilter.displayLevel1" on-color="#20a0ff" @change="handleLevelFilterClick(1)">
-                                </el-switch>
-                            </div>
-                            <div>
-                                <div class="word-level">{{ wordLevelInfo[2] }}</div>
-                                <el-switch v-model="wordbookFilter.displayLevel2" on-color="#20a0ff" @change="handleLevelFilterClick(2)">
-                                </el-switch>
-                            </div>
                             <div style="padding: 10px 0;">
-                                <el-button type="primary" @click="handleMarkAllNewWordClick()">批量标记</el-button>
+                                <el-button type="primary" @click="handleMarkAllNewWordClick()">批量->熟悉</el-button>
                             </div>
                             <div style="padding: 10px 0;">
                                 <el-button type="primary" @click="handleExportClick()">{{ i18n.msg.wordexport }}</el-button>
@@ -96,7 +91,7 @@
                         <div class="word-list-container">
                             <div class="word-list">
                                 <el-table :data="filteredWordBook" height="600" border style="width: 100% " :row-style="tableRowStyle"
-                                    @row-dblclick="handleEditorWordLevel">
+                                    @row-dblclick="">
                                     <el-table-column prop="text" label="单词" width="180">
                                     </el-table-column>
                                     <el-table-column prop="result" label="解释" width="100">
@@ -104,6 +99,16 @@
                                     <el-table-column prop="dict" label="详细解释">
                                     </el-table-column>
                                     <el-table-column prop="level.text" label="状态" width="125">
+                                    </el-table-column>                                   
+                                    <el-table-column label="操作"  width="125"> 
+                                            <template slot-scope="scope">
+                                              <el-button
+                                                size="mini"
+                                                @click="handleEditorWordOk(scope.$index, scope.row)">熟悉</el-button>
+                                              <el-button
+                                                size="mini"                                                
+                                                @click="handleEditorWordNext(scope.$index, scope.row)">陌生</el-button>
+                                            </template>
                                     </el-table-column>
                                 </el-table>
                             </div>
