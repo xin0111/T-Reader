@@ -14,6 +14,7 @@ import {getSyncConfig} from './config'
 window.selectTextMap = {};
 window.dictData = {};
 window.displayAll = false;
+window.displayPhonetic =true;
 
 localforage.setDriver(localforage.INDEXEDDB);
 
@@ -80,6 +81,7 @@ init()
             ])
         .then(([ config ]) => {
             displayAll = config.displayWordok;
+            displayPhonetic = config.displayPhonetic;
         });
 }
 
@@ -90,8 +92,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         var storageChange = changes['config'];
         if(storageChange)
         {
-                displayAll= storageChange.newValue.displayWordok;
-
+            displayAll= storageChange.newValue.displayWordok;
+            displayPhonetic= storageChange.newValue.displayPhonetic;
         }
     }
 });
@@ -104,12 +106,13 @@ window.getWordTrans =
         if (info)
         {
            var trans = info['result'][0];           
-           return displayAll?  trans: info['level'].value === 1 ? "" : trans;           
+           var phonetic = info.phonetic ? info.phonetic[0].value:"";
+           if(displayPhonetic) 
+                trans = phonetic + " " + trans;
+           return displayAll?  trans : info['level'].value === 1 ? "" : trans ;           
         }
         return "";
     };
-
-
 
 var wordsHelper = {
 

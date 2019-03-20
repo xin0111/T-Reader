@@ -47,6 +47,9 @@
     "options_word_next": {
         "message": "陌生词"
     },
+    "options_word_phonetic": {
+        "message": "显示音标"
+    },
     "options_word_export": {
         "message": "数据导出"
     },

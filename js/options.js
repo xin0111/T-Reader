@@ -13,6 +13,7 @@ import {getSyncConfig,
 import * as i18n from '../js/message';
 import {getParameterByName} from '../js/utils'
 import wordRoots from '../js/wordroots';
+import $ from 'jquery'
 
 Vue.use(SocialSharing);
 
@@ -30,11 +31,13 @@ const TRANSLATE_ENGINS =
         {
             label : 'Google',
             value : 'google'
-        },
-        {
-            label : 'Bing',
-            value : 'bing'
-        } ];
+        }
+        //,
+        // {
+        //     label : 'Bing',
+        //     value : 'bing'
+        // } 
+    ];
 
 Vue.use(ElementUI);
 
@@ -174,6 +177,9 @@ function render(config)
                 }
                 return results;
             },
+            getPhonetic(row, column){
+                return row.phonetic ? row.phonetic[0].value : "";    
+            },
             handleLevelFilterClick(level) {
                 //init
                 this.wordbookFilter.wordSearchText = '';
@@ -227,13 +233,13 @@ function render(config)
             downloadAsJson(words) {
                 let content = "data:text/json;charset=utf-8,";
 
-                content +="{\n";
+                content +="[\n";
                 words.forEach(({ text, result = [], dict, level = {},to}, index) => {
-                    let wordString = `"${text}":{\n\t"result":"${result}",\n\t"dict":"${dict}",\n\t"level":"${level.value}",\n\t"to":"${to}"\n}`;
+                    let wordString = `{\n\t"text":"${text}","result":"${result}",\n\t"dict":"${dict}",\n\t"level":"${level.value}",\n\t"to":"${to}"\n}`;
                 
                     content += index < words.length-1 ? wordString+ ",\n" : wordString +"\n";
                 });
-                content +="}";
+                content +="]";
                 let encodedUri = encodeURI(content);
 
                 this.download(encodedUri, 't-reader.json');
@@ -252,7 +258,10 @@ function render(config)
                 const obj = JSON.parse(JSON.stringify(wordStorage));
                 this.downloadAsJson(obj);               
             },
-            handleImportClick() { alert("import") }
+            handleImportClick() {                  
+                //   $.getJSON("",function(data){
+                //   });
+            }
         }
     });
 

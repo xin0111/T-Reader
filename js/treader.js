@@ -46,7 +46,7 @@ function textRender(config, text)
     var words = d3plus.textSplit(text);
 
     if (config.engine === 'bing') {
-        bing_search(textBox, words);
+        bing_search(textBox, words, config);
     } else {
         tjs_search(textBox, words, config);
     }
@@ -76,7 +76,7 @@ function tjs_search(textBox, words, config)
     }
 }
 
-function bing_search(textBox, words)
+function bing_search(textBox, words,config)
 {
     for (var i = 0; i < words.length; ++i) {
         bg.findWordInfo(words[i]).then((resp) => {             
@@ -88,6 +88,9 @@ function bing_search(textBox, words)
                     bing.translate(word).then((result) => {
                         refreshTextBox(result, textBox);
                     });
+
+                    //更新显示
+                    textBox.render(); 
                 });
             }
 }

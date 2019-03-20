@@ -7,6 +7,7 @@ export const msg = {
     target : chrome.i18n.getMessage('options_general_target'),
     fontSize : chrome.i18n.getMessage('options_general_fontsize'),
     displayWordok : chrome.i18n.getMessage('options_display_wordok'),
+    displayPhonetic: chrome.i18n.getMessage('options_word_phonetic'), 
     choose : chrome.i18n.getMessage('options_base_choose'),
     save : chrome.i18n.getMessage('options_base_save'),
     saveok : chrome.i18n.getMessage('options_msg_saveok'),

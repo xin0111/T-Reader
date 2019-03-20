@@ -371,8 +371,8 @@ function transformRaw(text, body)
     var customTo = getValue(transResult, 'to');
     var result = {
         text : text,
-        raw : body,
-        link : root + ("/#" + customFrom + "/" + customTo + "/" + encodeURIComponent(text)),
+        // raw : body,
+        // link : root + ("/#" + customFrom + "/" + customTo + "/" + encodeURIComponent(text)),
         from : custom2standard[customFrom],
         to : custom2standard[customTo]
     };
@@ -550,8 +550,8 @@ function transformRaw$1(rawRes, queryObj)
         text : text,
         from : realFrom,
         to : to,
-        raw : rawRes,
-        link : getRoot(queryObj.com) + "/#" + realFrom + "/" + to + "/" + encodeURIComponent(text)
+        // raw : rawRes,
+        // link : getRoot(queryObj.com) + "/#" + realFrom + "/" + to + "/" + encodeURIComponent(text)
     };
     try {
         // 尝试获取详细释义
@@ -676,13 +676,13 @@ function transformRaw$2(body, text)
     to = custom2standard$1[to];
     var smartResult = body.smartResult;
     var result = {
-        raw : body,
+        // raw : body,
         text : text,
         from : from,
         to : to,
-        link : smartResult
-            ? "https://dict.youdao.com/search?q=" + encodeURIComponent(text) + "&keyfrom=fanyi.smartResult"
-            : "http://fanyi.youdao.com/translate?i=" + encodeURIComponent(text)
+        // link : smartResult
+        //     ? "https://dict.youdao.com/search?q=" + encodeURIComponent(text) + "&keyfrom=fanyi.smartResult"
+        //     : "http://fanyi.youdao.com/translate?i=" + encodeURIComponent(text)
     };
     if (smartResult) {
         try {

@@ -47,11 +47,19 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-form-item :label="i18n.msg.fontSize"  >
-                                <el-input v-model="config.fontSize"> </el-input>
-                            </el-form-item>
-                        </el-col>
+                                <el-form-item :label="i18n.msg.displayPhonetic">
+                                    <el-switch v-model="config.displayPhonetic" on-color="#20a0ff">
+                                    </el-switch>
+                                </el-form-item>
+                            </el-col>
                     </el-row>
+                    <el-row>
+                            <el-col :span="6">
+                                <el-form-item :label="i18n.msg.fontSize"  >
+                                    <el-input v-model="config.fontSize"> </el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
                     <el-form-item>
                         <el-button type="primary" @click.native.prevent="handleConfigSubmit">{{ i18n.msg.save }}</el-button>
                     </el-form-item>
@@ -83,7 +91,7 @@
                             </div>
                             <div style="padding: 10px 0;">
                                 <el-button type="primary" @click="handleExportClick()">{{ i18n.msg.wordexport }}</el-button>
-                                <el-button type="primary" @click="handleImportClick()">{{ i18n.msg.wordimport }}</el-button>
+                                <!-- <el-button type="primary"  @click="handleImportClick()">{{ i18n.msg.wordimport }}</el-button> -->
                             </div>
                         </div>
                     </el-col>
@@ -93,6 +101,8 @@
                                 <el-table :data="filteredWordBook" height="600" border style="width: 100% " :row-style="tableRowStyle"
                                     @row-dblclick="">
                                     <el-table-column prop="text" label="单词" width="180">
+                                    </el-table-column>                                    
+                                    <el-table-column prop="phonetic" label="音标" :formatter="getPhonetic" width="100">
                                     </el-table-column>
                                     <el-table-column prop="result" label="解释" width="100">
                                     </el-table-column>

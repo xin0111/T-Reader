@@ -13,6 +13,7 @@ export const defaultConfig = {
     autoSetFrom : true,
     engine : 'baidu',
     displayWordok : false,
+    displayPhonetic: true,
     version
 }
 
