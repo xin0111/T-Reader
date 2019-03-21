@@ -634,6 +634,8 @@ if (!Array.prototype.includes) {
   }
 
   function styleValue(node, name) {
+    // 更新时关闭页面处理.
+    if(defaultView(node) === undefined) return;    
     return node.style.getPropertyValue(name)
         || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
   }
@@ -3471,13 +3473,22 @@ if (!Array.prototype.includes) {
         tempData = [];
         var word = words[i];       
         var translate = transfunc(word);
-        if(translate == undefined)
-          translate= "";
+        if(translate.trans == undefined)
+          translate.trans = "";
+
         var wordWidth = sizes[words.indexOf(word)];
     
-        widthMax = max([widthMax,wordWidth]);
+        widthMax = max([widthMax,wordWidth]);        
+
+        if(translate.pinyin !== undefined)
+            tempData.push(translate.pinyin);
+        
         tempData.push(word);
-        tempData.push(translate);
+
+        if(translate.phonetic !== undefined)
+            tempData.push(translate.phonetic);
+
+        tempData.push(translate.trans);
         
         lineData.push(tempData);
       }
@@ -3774,11 +3785,12 @@ if (!Array.prototype.includes) {
       
            var sizes = measure(lineData[i],style);
            var wordWidth = max(sizes);    
+           var heightOffset = lH * (sizes.length+0.5);
            var lineBreak = lineData[i][0] == "<br/>";
            if((widthProg + padding.left + wordWidth) > w || lineBreak)
            {//next line
               widthProg = 0;
-              heightPorg += lH*2;
+              heightPorg += heightOffset;
               if(lineBreak)
                 continue;
            }
@@ -3810,7 +3822,7 @@ if (!Array.prototype.includes) {
         document.getElementById("svg-textBox")
         .setAttribute("style",
            "width: " + max([widthProg,window.innerWidth]) + "px;" +
-           " height: " + max([heightPorg += lH*2,window.innerHeight]) + "px;");
+           " height: " + max([heightPorg += heightOffset,window.innerHeight]) + "px;");
 
         return arr;
 

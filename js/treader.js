@@ -55,7 +55,7 @@ function textRender(config, text)
 function tjs_search(textBox, words, config)
 {    
     for (var i = 0; i < words.length; ++i) {
-        bg.findWordInfo(words[i]).then((resp) => {                               
+        bg.findWordInfo(words[i]).then((resp) => {                              
                 var word = resp.text;
                 var trans = resp.info !=undefined  ? resp.info.result[0] : undefined;
                 var to = resp.info !=undefined  ? resp.info.to : undefined;

@@ -107,11 +107,18 @@ window.getWordTrans =
         {
            var trans = info['result'][0];           
            var phonetic = info.phonetic ? info.phonetic[0].value:"";
-           if(displayPhonetic) 
-                trans = phonetic + " " + trans;
-           return displayAll?  trans : info['level'].value === 1 ? "" : trans ;           
+         
+           return {
+               trans:displayAll?  trans : info['level'].value === 1 ? "" : trans,
+               pinyin:undefined,
+               phonetic: displayPhonetic ? phonetic === undefined? "":phonetic:undefined
+           }
         }
-        return "";
+        return {
+            trans:"",
+            pinyin:undefined,
+            phonetic:undefined
+        };
     };
 
 var wordsHelper = {
